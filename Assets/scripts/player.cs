@@ -1,28 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public class player : MonoBehaviour
 {
     public GameObject pelaaja;
-    private float difficulty = 1;
-
+    private Rigidbody2D rb;
+    private Vector2 speed = new Vector2(0.15f,0);
+    private int maxspeed = 9999999;
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
     }
-
     void Update()
     {
+
         if (Input.GetKey(KeyCode.A))
         {
-            Vector3 newpos = new Vector3(-0.025f * difficulty, 0, 0);
-            pelaaja.transform.position += newpos;
+            if (rb.velocity.x > -maxspeed)
+            {
+                rb.velocity -= speed;
+            }
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
-            Vector3 newpos = new Vector3(0.025f * difficulty, 0, 0);
-            pelaaja.transform.position += newpos;
+            if (rb.velocity.x < maxspeed)
+            {
+                rb.velocity += speed;
+            }
         }
+        rb.velocity *= new Vector2(0.997f, 0);
     }
 }
